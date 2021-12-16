@@ -19,6 +19,7 @@ if [ -d "$exists" ]
 then
         echo "How should your backup be called?"
         read name
+        #You'll  probably have to adjust the path of your usb device here
         space=$(df |grep /dev/sdb1 |awk '{print $4}')
 
         disc=$(du -sc $path |awk '{print $1}' |tail -n 1)
