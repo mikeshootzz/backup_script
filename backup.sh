@@ -1,22 +1,23 @@
 #!/bin/bash
 
-einsteckung=`lsusb | grep 0781:5583 | wc -l`
+#You'll have to change the ID here to the one of your backup device!
+plugin=`lsusb | grep 0781:5583 | wc -l`
 
-if [ $einsteckung -eq 0 ]
+if [ $plugin -eq 0 ]
 then
-    echo "Kein USB Stick eingesteckt."
+    echo "Your USB device is not plugged in."
     logger Backup failed due to missing USB device
     exit 0
 fi
 
 while :
 do
-    echo "wovon möchtest du ein Backup machen?"
+    echo "What do you want to backup?"
     read path
     exists=$path
 if [ -d "$exists" ]
 then
-        echo "Wie soll dein Backup heissen?"
+        echo "How should your backup be called?"
         read name
         space=$(df |grep /dev/sdb1 |awk '{print $4}')
 
@@ -24,11 +25,11 @@ then
 
     if [ $disc -gt $space ]
     then
-        echo "Zu wenig Speicherplatz verfügbar!"
+        echo "You don't have enough storage!"
         logger Backup failed: not enough storage
         exit 0
     fi
-    echo "Dein Backup beginnt in Kürze..."
+    echo "Your backup will start shortly..."
     sleep 5
 
 
@@ -39,7 +40,7 @@ then
     echo "Done!"
     exit 0
 else
-    echo "Diesen Pfad gibt es nicht!"
+    echo "That directory doesn't exist!"
     sleep 2
 fi
 done
